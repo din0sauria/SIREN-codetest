@@ -131,6 +131,8 @@ self.instance_text_path.sort(key = lambda x:int(str(x).split('\\')[-1].split('.'
 
     训练使用NVIDIA GeForce RTX 4060 Laptop GPU，显存8G专用+8G共享=16G
     由于本实验以学习为目的，基于显存及速度考虑，调整了微调参数使显存更低速度更快
+    由于显存不足，调整到了batch_size = 1并使用AdamW8bit优化器和network_dim=16
+    使用kohya-ss LoRA微调10epoch，根据loss变化决定所有模型微调5epoch
 
 下载kohya-ss LoRA 仓库保存到sd-scripts
 
@@ -487,7 +489,7 @@ Threshold:
 在 `kohya` 实验中，在常见的显著性水平（如 `0.05`）下，有较高比例的检验结果拒绝原假设，说明水印样本和干净样本之间可能存在更显著的差异；而在 `diffusers` 实验中，这种差异相对不那么显著。
 
 两次实验在不同阈值下 `p` 值小于阈值的频率差异较大，这可能是由于：
-1. `diffusers` 官方实现的微调模型可能欠拟合，未完全学习水印特征。
+1. `diffusers` 实验中的微调模型可能欠拟合，未完全学习水印特征。
 2. `diffusers` 实验中，官方实现限制了提示词唯一。而由论文可知理论原理是设计一种可靠的涂层，使其在训练中被视为与学习任务有关的特征，唯一的提示词对应多种图像及其水印，可能干扰了水印特征的学习。
 
 - **kohya-ss LoRA**：水印效果较好，但训练过程较复杂，生成图片质量稳定。
@@ -500,7 +502,3 @@ Threshold:
 ## 运行说明
 
 可参考本报告和README.md
-
-## 结论
-
-通过对比 kohya-ss LoRA 和 diffusers 两种方法，发现 kohya-ss LoRA 在水印检测效果上表现更好，但训练过程较为复杂；diffusers 方法训练简单快速，但在水印鲁棒性上稍逊一筹。根据具体需求选择合适的方法。
