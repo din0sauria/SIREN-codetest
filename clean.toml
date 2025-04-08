@@ -1,0 +1,11 @@
+[general]
+enable_bucket = true
+
+[[datasets]]
+resolution = 512
+batch_size = 1
+
+  [[datasets.subsets]]
+  image_dir = 'coated_dataset/original'
+  caption_extension = '.txt'
+  num_repeats = 1

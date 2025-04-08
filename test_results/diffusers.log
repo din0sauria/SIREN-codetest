@@ -1,0 +1,10 @@
+Experimenter + base model + dataset + fine-tuning method + watermarking method + additional notes
+diffusers
+Time: 2025-04-08 15:09
+Command: python ks_test_final.py --clean_path ./detection_results/2.npy --coating_path ./detection_results/3.npy --output ./test_results/diffusers.log --repeat 100000 --samples 50
+Clean_sample_size: 300, Watermark_sample_size: 50
+Clean statistics: (19.801754382451374, 7.58085748970816)
+Watermark statistics: (18.329211947917937, 31.769990669024267)
+
+Threshold:
+{0.1: 0.44682, 0.05: 0.31459, 0.01: 0.12158, 0.005: 0.07437, 0.001: 0.02254, 0.0005: 0.0193, 0.0001: 0.00396, 5e-05: 0.0036, 1e-05: 0.00073, 5e-06: 0.00059, 1e-06: 0.00024, 5e-07: 8e-05, 1e-07: 1e-05, 5e-08: 1e-05, 1e-08: 1e-05, 5e-09: 0.0, 1e-09: 0.0, 5e-10: 0.0, 1e-10: 0.0, 5e-11: 0.0, 1e-11: 0.0, 5e-12: 0.0, 1e-12: 0.0, 5e-13: 0.0, 1e-13: 0.0, 5e-14: 0.0, 1e-14: 0.0, 5e-15: 0.0, 1e-15: 0.0, 5e-16: 0.0, 1e-16: 0.0, 5e-17: 0.0, 1e-17: 0.0, 5e-18: 0.0, 1e-18: 0.0, 5e-19: 0.0, 1e-19: 0.0, 5e-20: 0.0, 1e-20: 0.0}
