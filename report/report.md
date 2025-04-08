@@ -1,6 +1,8 @@
 
 # SIREN 水印迁移性测试任务报告
 
+本报告是对论文《Towards Reliable Verification of Unauthorized Data Usage in Personalized Text-to-Image Diffusion Models》（IEEE S&P 2025）的代码仓库进行的迁移性测试：在宝可梦数据集上训练出的水印编码器、解码器，能否直接迁移到另一个Q版动漫数据集(Anime-Chibi-Dataset)上使用。
+
 ## 任务一：环境配置
 
 ### 1.1 拉取 SIREN 仓库
@@ -492,8 +494,7 @@ Threshold:
 1. `diffusers` 实验中的微调模型可能欠拟合，未完全学习水印特征。
 2. `diffusers` 实验中，官方实现限制了提示词唯一。而由论文可知理论原理是设计一种可靠的涂层，使其在训练中被视为与学习任务有关的特征，唯一的提示词对应多种图像及其水印，可能干扰了水印特征的学习。
 
-- **kohya-ss LoRA**：水印效果较好，但训练过程较复杂，生成图片质量稳定。
-- **diffusers**：训练简单快速，但水印检测效果逊于 kohya-ss LoRA。
+因此在宝可梦数据集上训练出的水印编码器、解码器有一定的迁移性，但是可能要考虑新数据集的类似程度和模型训练的程度。
 
 ## 代码提交
 

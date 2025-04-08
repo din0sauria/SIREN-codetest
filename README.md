@@ -1,6 +1,8 @@
 # SIREN codetest
 
-本仓库对论文《Towards Reliable Verification of Unauthorized Data Usage in Personalized Text-to-Image Diffusion Models》（IEEE S&P 2025）的代码仓库进行测试。
+本仓库对论文《Towards Reliable Verification of Unauthorized Data Usage in Personalized Text-to-Image Diffusion Models》（IEEE S&P 2025）的代码仓库进行迁移性测试。
+
+SIREN原文中提出的可学习性损失是和数据集绑定的。例如，在原文的实验中，在宝可梦数据集上训练出的SIREN水印编码器和解码器，之后也会直接被应用在宝可梦数据集上。但是，这样对于每一个新的数据集都需要重新训练一次编码器和解码器，耗时长、效率低。因此，我们想要知道，在数据集的分布相似的情况下，在一个数据集上训练好的SIREN编码器、解码器能否在另一个数据集上使用。例如，在宝可梦数据集上训练出的水印编码器、解码器，能否直接迁移到另一个Q版动漫数据集(Anime-Chibi-Dataset)上使用，而不是在Anime-Chibi-Dataset数据集上重新训练。如果可行，那么我们就能节省很多训练的时间，提高了SIREN方法的可扩展性。
 
 ## 项目目录
 ```bash
