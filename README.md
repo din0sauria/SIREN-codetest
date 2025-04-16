@@ -5,6 +5,7 @@
 SIREN原文中提出的可学习性损失是和数据集绑定的。例如，在原文的实验中，在宝可梦数据集上训练出的SIREN水印编码器和解码器，之后也会直接被应用在宝可梦数据集上。但是，这样对于每一个新的数据集都需要重新训练一次编码器和解码器，耗时长、效率低。因此，我们想要知道，在数据集的分布相似的情况下，在一个数据集上训练好的SIREN编码器、解码器能否在另一个数据集上使用。例如，在宝可梦数据集上训练出的水印编码器、解码器，能否直接迁移到另一个Q版动漫数据集(Anime-Chibi-Dataset)上使用，而不是在Anime-Chibi-Dataset数据集上重新训练。如果可行，那么我们就能节省很多训练的时间，提高了SIREN方法的可扩展性。
 
 ## 项目目录
+
 ```bash
 CODETEST
 ├─annotated_subset # blip2标注后的数据集
@@ -41,35 +42,48 @@ train_dreambooth_lora.py #diffusion-v1-5官方lora实例
 ```
 
 ## 环境搭建指南
+
 本节提供详细的环境准备和执行 SIREN 项目的步骤，请按照以下说明操作。
 
 ### 1. 环境搭建
+
 #### 创建 Conda 环境：
+
 使用 Python 3.9 创建一个名为 sirentest 的新 Conda 环境：
+
 ```bash
 conda create --name sirentest python=3.9
 ```
+
 #### 激活环境：
+
 激活新创建的环境：
+
 ```bash
 conda activate sirentest
 ```
+
 ### 2. 依赖安装
+
 安装所需的 Python 包：
+
 ```bash
 pip install -r requirements.txt
 ```
+
 支持GPU的torch版本可能需要自行选择，本实验使用的torch版本为torch2.4.1+cu118
 
 注意执行diffusions官方库训练时需要使用最新diffusers库而不是diffusers发布版
+
 ```bash
 pip install -U git+https://github.com/huggingface/diffusers
 ```
+
 ### 3. 模型下载
 
 由于模型文件太大未上传到仓库，可以在huggingface或镜像站下载。
 必要的模型包括`blip2-opt-2.7b`,`clip-vit-large-patch14`,`stable-diffusion-v1-5`。
-注意`clip-vit-large-patch14`是transformer库需要的clip模型，需要根据库函数配置。注意文件夹命名，如`blip2-opt-2.7`因为不能有`.`需命名为`blip2-opt-2___7b`
+注意`clip-vit-large-patch14`是transformer库需要的clip模型，需要根据库函数配置。注意文件夹命名，如`blip2-opt-2.7`在本实验中的路径命名了为`blip2-opt-2___7b`
 
 ## 快速复现指南
 
@@ -78,6 +92,7 @@ pip install -U git+https://github.com/huggingface/diffusers
 #### 下载 Anime-Chibi 数据集并随机筛选 500 张图片
 
 在下载目录下执行以下代码，然后将子集subset移动到目录下
+
 ```python
 import os
 import shutil
@@ -102,13 +117,11 @@ for img in selected_images:
 
 下载blip2-opt-2.7b到目录，运行`caption.py`进行推理生成 Caption
 
-
 #### 添加 SIREN 水印
 
 ```bash
 python ./SIREN/coating.py --dataset_path "./annotated_subset" --decoder_checkpoint "./SIREN/ckpt/pokemon_decoder.pth" --encoder_checkpoint "./SIREN/ckpt/pokemon_encoder.pth" --output_path "./coated_dataset" --is_text --gpu_id 0
 ```
-
 
 ### 训练个性化模型与生成图片
 
@@ -120,6 +133,7 @@ python ./SIREN/coating.py --dataset_path "./annotated_subset" --decoder_checkpoi
 下载kohya-ss LoRA 仓库保存到sd-scripts
 
 运行训练命令（windous PS使用`换行，下同）
+
 ```bash
 accelerate launch --gpu_ids='0'  sd-scripts/train_network.py `
     --pretrained_model_name_or_path="stable-diffusion-v1-5" `
@@ -138,7 +152,7 @@ accelerate launch --gpu_ids='0'  sd-scripts/train_network.py `
     --network_alpha=8 `
     --gradient_accumulation_steps=1 `
     --cache_latents 
-    
+
 accelerate launch --gpu_ids='0'  sd-scripts/train_network.py `
     --pretrained_model_name_or_path="stable-diffusion-v1-5" `
     --dataset_config="coated.toml" `
@@ -200,7 +214,6 @@ accelerate launch train_dreambooth_lora.py `
 
 运行`gen_evaluate_pic.py`用四种权重分别生成图片，自动命名为{modelIndex}_{promptIndex}.png
 由于本实验已经引入clip，可以方便地使用clip计算图文相似度分数
-
 
 ### 检测图片
 
